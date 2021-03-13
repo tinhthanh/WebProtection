@@ -22,12 +22,10 @@
  const cache  = sessionStorage.getItem(actionType);
  if(cache) {
     addScript(cache);
-    console.log("load cache");
  } else {
     chrome.runtime.sendMessage({action: "CONTROLLER", domain: window.location.hostname.replace(/(https?:\/\/)?(www.)?/i, ''), actionType: actionType }, (response) => {
         addScript(response.script);
         sessionStorage.setItem( actionType,response.script);
-        console.log("load clound");
     });
  }
   
