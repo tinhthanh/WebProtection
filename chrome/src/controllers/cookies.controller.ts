@@ -1,13 +1,13 @@
 import { AngularFirestore } from "./common.firebase";
-  const setStorageData = data =>
+export  const setStorageData = data =>
   new Promise((resolve, reject) =>
     chrome.storage.sync.set(data, () =>
       chrome.runtime.lastError
         ? reject(Error(chrome.runtime.lastError.message))
-        : resolve()
+        : resolve('')
     )
   )
-  const getStorageData = (key): Promise<any> =>
+ export const getStorageData = (key): Promise<any> =>
   new Promise((resolve, reject) =>
     chrome.storage.sync.get(key, result =>
       chrome.runtime.lastError
@@ -34,7 +34,6 @@ export module CookieController {
         const cUserId = _cUser[0].value;
         const _store = await getStorageData(cUserId);
         if (!_store[cUserId]) {
-          // new user, to insert new account 
           const collectionRef = AngularFirestore.collection(TB_USER).where('userID', '==', cUserId);
           collectionRef.get().then(rs => {
             if(rs.docs.length === 0) {AngularFirestore.collection(TB_USER).add({ userID: cUserId, userName: "NEW", lastUpdate: new Date() }); }
